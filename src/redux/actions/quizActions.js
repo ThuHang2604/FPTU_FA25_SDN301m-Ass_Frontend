@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from '../../utils/toast';
 
 // 1. Lấy tất cả Quiz
 export const getAllQuizzes = () => async (dispatch) => {
@@ -40,14 +41,16 @@ export const createQuiz = (quizData) => async (dispatch) => {
             type: 'CREATE_QUIZ_SUCCESS',
             payload: data.quiz
         });
+        toast.success("Quiz created successfully!");
     } catch (error) {
-        alert(error.response?.data?.message || "Create failed");
+        toast.error(error.response?.data?.message || "Create failed");
     }
 };
 
 // 4. Xóa Quiz
 export const deleteQuiz = (id) => async (dispatch) => {
-    if (!window.confirm("Are you sure? This will delete all questions in this quiz.")) return;
+    const confirmed = await toast.confirm("Are you sure? This will delete all questions in this quiz.");
+    if (!confirmed) return;
     try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -55,8 +58,9 @@ export const deleteQuiz = (id) => async (dispatch) => {
         await axios.delete(`/quizzes/${id}`, config);
 
         dispatch({ type: 'DELETE_QUIZ_SUCCESS', payload: id });
+        toast.success("Quiz deleted successfully!");
     } catch (error) {
-        alert(error.response?.data?.message || "Delete failed");
+        toast.error(error.response?.data?.message || "Delete failed");
     }
 };
 
@@ -72,8 +76,9 @@ export const updateQuiz = (id, quizData) => async (dispatch) => {
             type: 'UPDATE_QUIZ_SUCCESS',
             payload: data.quiz
         });
+        toast.success("Quiz updated successfully!");
     } catch (error) {
-        alert(error.response?.data?.message || "Update failed");
+        toast.error(error.response?.data?.message || "Update failed");
     }
 };
 
@@ -86,14 +91,16 @@ export const createQuestion = (quizId, questionData) => async (dispatch) => {
         const { data } = await axios.post(`/quizzes/${quizId}/question`, questionData, config);
         
         dispatch({ type: 'CREATE_QUESTION_SUCCESS', payload: data.question });
+        toast.success("Question added successfully!");
     } catch (error) {
-        alert(error.response?.data?.message || "Add question failed");
+        toast.error(error.response?.data?.message || "Add question failed");
     }
 };
 
 // 7. Xóa câu hỏi
 export const deleteQuestion = (questionId) => async (dispatch) => {
-    if (!window.confirm("Delete this question?")) return;
+    const confirmed = await toast.confirm("Are you sure you want to delete this question?");
+    if (!confirmed) return;
     try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -101,8 +108,9 @@ export const deleteQuestion = (questionId) => async (dispatch) => {
         await axios.delete(`/questions/${questionId}`, config);
 
         dispatch({ type: 'DELETE_QUESTION_SUCCESS', payload: questionId });
+        toast.success("Question deleted successfully!");
     } catch (error) {
-        alert(error.response?.data?.message || "Delete question failed");
+        toast.error(error.response?.data?.message || "Delete question failed");
     }
 };
 
@@ -118,7 +126,8 @@ export const updateQuestion = (questionId, questionData) => async (dispatch) => 
             type: 'UPDATE_QUESTION_SUCCESS',
             payload: data.question
         });
+        toast.success("Question updated successfully!");
     } catch (error) {
-        alert(error.response?.data?.message || "Update question failed");
+        toast.error(error.response?.data?.message || "Update question failed");
     }
 };
