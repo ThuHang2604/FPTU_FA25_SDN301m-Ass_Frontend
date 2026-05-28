@@ -11,10 +11,13 @@ import AdminQuizDetail from './pages/AdminQuizDetail'; // Trang quản lý câu 
 
 // Import Component bảo vệ Route Admin
 import AdminRoute from './components/AdminRoute';
+import ToastContainer from './components/ToastContainer';
 
 function App() {
   return (
-    <Router>
+    <>
+      <ToastContainer />
+      <Router>
       <Routes>
         {/* --- ROUTE MẶC ĐỊNH --- */}
         {/* Truy cập trang chủ '/' sẽ tự chuyển về trang Login */}
@@ -50,6 +53,7 @@ function App() {
         />
       </Routes>
     </Router>
+   </>
   );
 }
 
